@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lost Bots - Protótipo Phaser</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+  
+  <style>
+    /* ... (CSS 'body', 'h3', 'button', etc. sem alterações) ... */
+
+    /* --- CABEÇALHO --- */
+    header {
+      padding: 10px 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #00bcd4; /* Ciano do protótipo */
+      
+      /* 1. ATUALIZAÇÃO: Transforma o header em flexbox */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* 2. NOVO: Estilos para o HUD (Vidas e Bateria) */
+    #game-status {
+      display: flex;
+      align-items: center;
+      gap: 30px; /* Espaço entre Vidas e Bateria */
+    }
+    #status-vidas, #status-bateria {
+      display: flex;
+      gap: 6px; /* Espaço entre os ícones */
+      align-items: center;
+    }
+    #game-status img {
+      height: 28px;
+    }
+  
+  
+    body {
+      margin: 0;
+      background: #1e1e1e;
+      color: white;
+      font-family: sans-serif;
+    }
+
+    /* --- CABEÇALHO --- */
+    header {
+      padding: 10px 20px;
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #00bcd4; /* Ciano do protótipo */
+    }
+
+    /* --- LAYOUT PRINCIPAL (3 COLUNAS) --- */
+    #game-layout {
+      display: flex;
+      flex-wrap: wrap; /* Permite quebrar em telas menores */
+      justify-content: center;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    /* --- COLUNA DA ESQUERDA (JOGO) --- */
+    #game-column {
+      flex: 2; /* Ocupa mais espaço */
+      min-width: 480px; /* Garante espaço para o canvas */
+    }
+
+    /* Placeholder onde o Phaser vai injetar o canvas */
+    #phaser-game {
+      width: 480px;
+      height: 480px;
+      margin-bottom: 10px;
+    }
+
+    #phaser-game canvas {
+      border-radius: 8px; /* Borda no canvas */
+    }
+
+    /* --- COLUNA DO MEIO (COMANDOS) --- */
+    #commands-column {
+      flex: 1;
+      min-width: 250px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    /* --- COLUNA DA DIREITA (INSTRUÇÕES) --- */
+    #instructions-column {
+      flex: 1;
+      min-width: 250px;
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    h3 {
+      margin-top: 0;
+      border-bottom: 2px solid #00bcd4;
+      padding-bottom: 5px;
+    }
+
+    /* --- PAINEL DE INSTRUÇÕES (LISTA) --- */
+    #lista-comandos {
+      min-height: 200px;
+      background: #1a1a1a;
+      border: 1px solid #444;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 15px;
+      overflow-y: auto;
+    }
+
+    #lista-comandos p {
+      margin: 2px 0;
+      padding: 5px;
+      background: #333;
+      border-radius: 3px;
+    }
+
+    /* --- BOTÕES --- */
+    button {
+      display: block; /* Um botão por linha */
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      background: #008c9e;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      text-align: left;
+    }
+
+    button:hover {
+      background: #00bcd4;
+    }
+
+    #execution-buttons button {
+      background: #4CAF50; /* Verde para Executar */
+      text-align: center;
+      font-weight: bold;
+    }
+    
+    #execution-buttons button[onclick*="resetar"] {
+      background: #f44336; /* Vermelho para Resetar */
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+  LOST BOTS
+  <div id="game-status"></div> 
+  </header>
+
+  <div id="game-layout">
+
+    <div id="game-column">
+      <div id="phaser-game"></div> 
+    </div>
+
+    <div id="commands-column">
+      <h3>COMANDOS DISPONÍVEIS</h3>
+      <div id="command-buttons">
+        <button onclick="adicionarComando('frente')">IR PARA FRENTE</button>
+        <button onclick="adicionarComando('tras')">IR PARA TRÁS</button>
+        <button onclick="adicionarComando('cima')">IR PARA CIMA</button>
+        <button onclick="adicionarComando('baixo')">IR PARA BAIXO</button>
+      </div>
+    </div>
+
+    <div id="instructions-column">
+      <h3>SUAS INSTRUÇÕES</h3>
+      <div id="lista-comandos"></div> 
+      
+      <div id="execution-buttons">
+        <button onclick="executar()">EXECUTAR</button>
+        <button onclick="resetar()">RESETAR</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="niveis.js"></script> 
+  <script src="NivelScene.js"></script>
+  <script src="ConclusaoScene.js"></script> 
+  <script src="GameOverScene.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
