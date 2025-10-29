@@ -1,24 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <title>Lost Bots - Protótipo Phaser</title>
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
-  
-  <style>
-    /* ... (CSS 'body', 'h3', 'button', etc. sem alterações) ... */
+ /* ... (CSS 'body', 'h3', 'button', etc. sem alterações) ... */
 
     /* --- CABEÇALHO --- */
+    /* EM css/jogo.css */
+
+/* Modifique ou adicione esta regra */
     header {
-      padding: 10px 20px;
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #00bcd4; /* Ciano do protótipo */
-      
-      /* 1. ATUALIZAÇÃO: Transforma o header em flexbox */
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    display: flex;
+    justify-content: space-between; /* Isso alinha os 3 itens */
+    align-items: center;
+    padding: 10px 20px;
+    background: #2a2a2a; /* Fundo do painel */
+    border-bottom: 2px solid #008c9e;
     }
 
     /* 2. NOVO: Estilos para o HUD (Vidas e Bateria) */
@@ -148,47 +140,63 @@
     #execution-buttons button[onclick*="resetar"] {
       background: #f44336; /* Vermelho para Resetar */
     }
+/* EM css/jogo.css */
 
-  </style>
-</head>
-<body>
+/* 4. Estilos para o novo HUD do Jogo */
+#hud-container {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Espaço entre Vidas e Bateria */
+  
+  /* Usa as cores do painel para integrar */
+  background: #2a2a2a; 
+  padding: 10px 15px;
+  
+  /* Alinha com o canvas do jogo */
+  width: 480px; /* Largura exata do canvas */
+  box-sizing: border-box; /* Garante que o padding não aumente a largura */
+  
+  /* Cantos arredondados apenas no topo */
+  border-radius: 8px 8px 0 0;
+  
+  /* Remove qualquer margem estranha entre o HUD e o canvas */
+  margin-bottom: -1px; /* Ajuste fino */
+  position: relative; /* Garante que fique "em cima" */
+  z-index: 10;
+}
 
-  <header>
-  LOST BOTS
-  <div id="game-status"></div> 
-  </header>
+/* 5. Estilos para os ícones (o mesmo que antes) */
+#status-vidas, #status-bateria {
+  display: flex;
+  gap: 6px; 
+  align-items: center;
+}
 
-  <div id="game-layout">
+#hud-container img {
+  height: 28px;
+}
 
-    <div id="game-column">
-      <div id="phaser-game"></div> 
-    </div>
 
-    <div id="commands-column">
-      <h3>COMANDOS DISPONÍVEIS</h3>
-      <div id="command-buttons">
-        <button onclick="adicionarComando('frente')">IR PARA FRENTE</button>
-        <button onclick="adicionarComando('tras')">IR PARA TRÁS</button>
-        <button onclick="adicionarComando('cima')">IR PARA CIMA</button>
-        <button onclick="adicionarComando('baixo')">IR PARA BAIXO</button>
-      </div>
-    </div>
+/* Estilo para o logo (texto estático) */
+.logo-text {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #00bcd4; /* Ciano do protótipo */
+}
 
-    <div id="instructions-column">
-      <h3>SUAS INSTRUÇÕES</h3>
-      <div id="lista-comandos"></div> 
-      
-      <div id="execution-buttons">
-        <button onclick="executar()">EXECUTAR</button>
-        <button onclick="resetar()">RESETAR</button>
-      </div>
-    </div>
-  </div>
+/* Estilo para o novo link "Mapa de Níveis" */
+.mapa-link {
+  font-size: 1.0em;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background: #008c9e; /* Ciano escuro */
+  transition: background-color 0.2s ease;
+}
 
-  <script src="niveis.js"></script> 
-  <script src="NivelScene.js"></script>
-  <script src="ConclusaoScene.js"></script> 
-  <script src="GameOverScene.js"></script>
-  <script src="main.js"></script>
-</body>
-</html>
+.mapa-link:hover {
+  background: #00bcd4; /* Ciano claro */
+  color: #fff;
+}

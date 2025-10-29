@@ -1,33 +1,31 @@
+// ARQUIVO: js/ConclusaoScene.js (COMPLETO E ATUALIZADO)
+
 class ConclusaoScene extends Phaser.Scene {
 
   constructor() {
     super('ConclusaoScene');
     this.proximoNivelId = null;
     this.estrelas = 0;
+    this.currentLevelId = null; 
   }
 
   init(data) {
-    // 2. ADICIONE ESTA LINHA:
-    this.currentLevelId = data.currentLevelId; 
-
+    this.currentLevelId = data.currentLevelId;
     this.proximoNivelId = data.proximoNivelId;
     this.estrelas = data.estrelasConquistadas;
   }
 
   preload() {
-    // Carrega a imagem da estrela que será usada
     this.load.image('star', 'assets/star.png');
   }
 
-// Arquivo: ConclusaoScene.js
-
   create() {
-    // Fundo escuro semi-transparente
+    // Fundo escuro
     this.add.rectangle(0, 0, MAP_SIZE, MAP_SIZE, 0x000000, 0.7).setOrigin(0);
 
-    // Painel de Conclusão (baseado no protótipo)
+    // Painel
     const painel = this.add.graphics();
-    painel.fillStyle(0x00bcd4, 0.9); // Ciano
+    painel.fillStyle(0x00bcd4, 0.9);
     painel.fillRoundedRect(MAP_SIZE / 2 - 200, MAP_SIZE / 2 - 150, 400, 300, 16);
 
     // Texto "MISSÃO CUMPRIDA!"
@@ -37,18 +35,20 @@ class ConclusaoScene extends Phaser.Scene {
       fontStyle: 'bold'
     }).setOrigin(0.5);
 
+    // --- LÓGICA DE SALVAR PROGRESSO ---
+    this.salvarProgresso();
+    // --- FIM ---
+
     // Lógica para desenhar as estrelas
     const starY = 220;
     for (let i = 0; i < 3; i++) {
-      // Desenha 3 estrelas cinzas (vazias)
       this.add.sprite(220 + i * 80, starY, 'star').setScale(0.1).setTint(0x444444);
     }
     for (let i = 0; i < this.estrelas; i++) {
-      // Desenha as estrelas conquistadas (amarelas) por cima
       this.add.sprite(220 + i * 80, starY, 'star').setScale(0.1);
     }
 
-    // Textos de XP (baseado no protótipo)
+    // Textos de XP
     let bonusXp = (this.estrelas > 1) ? (this.estrelas - 1) * 50 : 0;
     this.add.text(MAP_SIZE / 2, 280, '• XP BASE: +100 XP', { fontSize: '18px', color: '#fff' }).setOrigin(0.5);
     this.add.text(MAP_SIZE / 2, 310, `• BÔNUS DE OTIMIZAÇÃO: +${bonusXp} XP`, { fontSize: '18px', color: '#fff' }).setOrigin(0.5);
@@ -56,23 +56,64 @@ class ConclusaoScene extends Phaser.Scene {
     // Botão "PRÓXIMO DESAFIO"
     if (this.proximoNivelId) {
       this.criarBotao('PRÓXIMO DESAFIO', 370, () => {
-        // Limpa o gameManager e inicia o próximo nível
         resetar();
+        // Recarrega a cena do Phaser com o próximo nível
         this.scene.start('NivelScene', { nivelId: this.proximoNivelId });
       });
     }
 
-    // Botão "ÁRVORE DE DOMÍNIO" (Volta ao Nível 1 por enquanto)
+    // Botão "ÁRVORE DE DOMÍNIO"
     this.criarBotao('ÁRVORE DE DOMÍNIO', 420, () => {
       resetar();
-      this.scene.start('NivelScene', { nivelId: 1 });
+      // Redireciona para o hub (menu de níveis)
+      window.location.href = 'jogo.html';
     });
 
-    // ================================================================
-    // ADICIONE ESTA LINHA:
-    // Avisa ao main.js que esta cena (ConclusaoScene) é agora a ativa
     this.game.events.emit('scene-ready', this);
-    // ================================================================
+  }
+
+  // --- FUNÇÃO PARA SALVAR NO FIREBASE ---
+  async salvarProgresso() {
+    // 1. Pega o usuário logado (o 'auth' foi inicializado no fase.html)
+    const user = auth.currentUser;
+    if (!user) {
+      console.error("Erro: Usuário não está logado. Progresso não será salvo.");
+      return;
+    }
+
+    // 2. Pega os dados deste nível
+    const newStars = this.estrelas;
+    const levelId = this.currentLevelId;
+
+    // 3. Cria o ID único do documento (ex: "IDdoUsuario_1")
+    const docId = `${user.uid}_${levelId}`;
+    const progressoRef = db.collection('progressoNiveis').doc(docId);
+
+    try {
+      // 4. Tenta ler o documento existente (usa 'get')
+      const doc = await progressoRef.get();
+
+      let currentBestStars = 0;
+      if (doc.exists) {
+        currentBestStars = doc.data().estrelasObtidas || 0;
+      }
+
+      // 5. Compara: Só salva se o novo placar for MELHOR
+      if (newStars > currentBestStars) {
+        console.log(`Novo recorde! Salvando ${newStars} estrelas para o nível ${levelId}`);
+        // 'set' com 'merge: true' (é uma operação 'write')
+        await progressoRef.set({
+          userId: user.uid,
+          nivelId: levelId,
+          estrelasObtidas: newStars
+        }, { merge: true });
+      } else {
+        console.log(`Placar antigo (${currentBestStars} estrelas) é melhor. Nada salvo.`);
+      }
+
+    } catch (error) {
+      console.error("Erro ao salvar progresso no Firestore:", error);
+    }
   }
 
   // Função helper para criar botões

@@ -1,0 +1,112 @@
+/* ==================================
+   CSS/AUTH.CSS
+   Estilos para login.html
+   ================================== */
+
+/* --- Configuração Geral --- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #1e1e1e; /* Fundo escuro */
+  color: white;
+  
+  /* Centraliza o container de login na tela */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* --- O Container Principal --- */
+#auth-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background: #2a2a2a; /* Fundo do painel */
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  box-sizing: border-box; /* Garante que o padding não estoure a largura */
+}
+
+/* --- Títulos --- */
+#auth-container h2 {
+  font-size: 2.5em;
+  color: #00bcd4; /* Ciano do protótipo */
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#auth-container h3 {
+  font-size: 1.5em;
+  color: white;
+  border-bottom: 2px solid #008c9e; /* Tom de ciano mais escuro */
+  padding-bottom: 5px;
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+/* --- Campos de Input (Email/Senha) --- */
+#auth-container input[type="email"],
+#auth-container input[type="password"] {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #1e1e1e;
+  color: white;
+  font-size: 16px;
+  box-sizing: border-box; /* Garante que o padding não estoure a largura */
+}
+
+#auth-container input:focus {
+  border-color: #00bcd4; /* Destaque ciano ao focar */
+  outline: none;
+}
+
+/* --- Botões de Ação --- */
+#auth-container button {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 18px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: #008c9e; /* Ciano */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease;
+}
+
+#auth-container button:hover {
+  background: #00bcd4; /* Ciano mais claro */
+}
+
+/* --- Links (Alternar Login/Registro) --- */
+#auth-container a {
+  color: #00bcd4;
+  cursor: pointer;
+  display: block;
+  margin-top: 15px;
+  text-decoration: none;
+}
+
+#auth-container a:hover {
+  text-decoration: underline;
+}
+
+/* --- Mensagens de Erro --- */
+.erro {
+  color: #f44336; /* Vermelho */
+  font-size: 0.9em;
+  height: 20px; /* Reserva espaço para não "pular" o layout */
+  margin: 0;
+  text-align: left;
+}

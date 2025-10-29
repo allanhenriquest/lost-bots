@@ -1,0 +1,82 @@
+/* ==================================
+   CSS/HUB.CSS
+   Estilos para jogo.html (Hub)
+   ================================== */
+
+.hub-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  color: white;
+}
+
+.hub-container h1 {
+  font-size: 2em;
+  color: #00bcd4; /* Ciano */
+  border-bottom: 2px solid #008c9e;
+  padding-bottom: 10px;
+}
+
+.modulo {
+  background: #2a2a2a; /* Fundo do painel */
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.modulo h2 {
+  margin-top: 0;
+}
+
+.modulo-bloqueado {
+  opacity: 0.5;
+  background: #222;
+}
+
+.niveis-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Estilo de cada nível (baseado no protótipo Nível 1, 2, 3...) */
+.nivel-card {
+  background: #1e1e1e;
+  border: 2px solid #008c9e;
+  border-radius: 8px;
+  padding: 15px;
+  width: 150px;
+  text-align: center;
+}
+
+.nivel-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+}
+
+.estrelas-container {
+  font-size: 1.5em;
+  color: #444; /* Estrelas vazias */
+  margin-bottom: 15px;
+}
+
+.estrelas-container span.cheia {
+  color: #FFD700; /* Dourado/Amarelo */
+}
+
+.nivel-card button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background: #4CAF50; /* Verde */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.nivel-card button:hover {
+  background: #5cb860;
+}

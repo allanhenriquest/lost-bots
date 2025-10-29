@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lost Bots - Fase</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  
+  <link rel="stylesheet" href="css/jogo.css">
+  <link rel="stylesheet" href="css/hub.css"> </head>
+<body>
+
+  <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBJ-Hp3UsCfMgaDpo4FPVsOj2c2vb6nub8",
+        authDomain: "lost-bots.firebaseapp.com",
+        projectId: "lost-bots",
+        storageBucket: "lost-bots.firebasestorage.app",
+        messagingSenderId: "1075236550422",
+        appId: "1:1075236550422:web:2a857d48138d05997b0237",
+        measurementId: "G-VXDW10X52C" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
+
+  <script src="js/check-auth.js"></script>
+
+
+  <header>
+    LOST BOTS
+    <div id="game-status"></div> 
+    <a href="jogo.html" class="mapa-link">Mapa de Níveis</a>
+  </header>
+
+  <div id="game-layout">
+
+    <div id="game-column">
+      <div id="hud-container"></div> 
+      <div id="phaser-game"></div> 
+    </div>
+
+    <div id="commands-column">
+      <h3>COMANDOS DISPONÍVEIS</h3>
+      <div id="command-buttons">
+        <button onclick="adicionarComando('frente')">IR PARA FRENTE</button>
+        <button onclick="adicionarComando('tras')">IR PARA TRÁS</button>
+        <button onclick="adicionarComando('cima')">IR PARA CIMA</button>
+        <button onclick="adicionarComando('baixo')">IR PARA BAIXO</button>
+      </div>
+    </div>
+
+    <div id="instructions-column">
+      <h3>SUAS INSTRUÇÕES</h3>
+      <div id="lista-comandos"></div> 
+      
+      <div id="execution-buttons">
+        <button onclick="executar()">EXECUTAR</button>
+        <button onclick="resetar()">RESETAR</button>
+      </div>
+    </div>
+    
+  </div> <script src="js/niveis.js"></script> 
+  <script src="js/NivelScene.js"></script>
+  <script src="js/ConclusaoScene.js"></script> 
+  <script src="js/GameOverScene.js"></script>
+  <script src="js/main.js"></script>
+  
+</body>
+</html>
