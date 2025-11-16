@@ -1,80 +1,121 @@
-// ARQUIVO: js/hub.js (Atualizado)
+// ARQUIVO: js/hub.js (COMPLETO E ATUALIZADO PARA MÓDULOS)
 
-// Espera o DOM carregar e o check-auth.js verificar o usuário
 auth.onAuthStateChanged((user) => {
   if (user) {
-    // O usuário está logado, podemos carregar os dados
     carregarProgresso(user.uid);
   }
 });
 
 async function carregarProgresso(userId) {
-  const containerNiveis = document.getElementById('lista-niveis-1');
-  if (!containerNiveis) return;
+  // 1. Pega os containers dos módulos
+  const containerMod1 = document.getElementById('lista-niveis-1');
+  const containerMod2 = document.getElementById('lista-niveis-2');
+  const moduloCondicionais = document.getElementById('modulo-condicionais');
   
-  containerNiveis.innerHTML = "Carregando níveis...";
+  if (!containerMod1 || !containerMod2) return;
+  
+  containerMod1.innerHTML = "Carregando...";
+  containerMod2.innerHTML = ""; // Limpa por via das dúvidas
 
-  let progressoSnapshot;
-  
-  // --- ADICIONADO: Bloco try...catch ---
+  let progresso = {};
+  let estrelasModulo1 = 0; // ★ NOVO: Contador de estrelas
+
   try {
-    // 1. Pega os dados de progresso do usuário no Firestore
-    progressoSnapshot = await db.collection('progressoNiveis')
-                                   .where('userId', '==', userId)
-                                   .get();
+    // 2. Busca todo o progresso do usuário
+    const snapshot = await db.collection('progressoNiveis')
+                             .where('userId', '==', userId)
+                             .get();
+    
+    // 3. Mapeia o progresso e conta as estrelas
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      progresso[data.nivelId] = data.estrelasObtidas;
+      
+      // Se o nível for do Módulo 1 (ID 1 a 5), soma as estrelas
+      if (data.nivelId >= 1 && data.nivelId <= 5) {
+        estrelasModulo1 += data.estrelasObtidas;
+      }
+    });
+
   } catch (error) {
-    console.error("Erro do Firestore ao buscar progresso:", error);
-    // Se o erro for de "Índice", o Firebase dará um link no console (F12)
-    if (error.code === "failed-precondition") {
-        containerNiveis.innerHTML = `<p class="erro">Erro: Índice do Firestore em falta. Abra o console (F12) e clique no link no erro para criar o índice.</p>`;
-    } else {
-        containerNiveis.innerHTML = `<p class="erro">Erro ao carregar níveis: ${error.message}</p>`;
-    }
-    return; // Para a função aqui
+    console.error("Erro ao buscar progresso:", error);
+    containerMod1.innerHTML = `<p class="erro">Erro ao carregar. Tente recarregar a página.</p>`;
+    return;
   }
 
-  // 2. Mapeia o progresso para fácil acesso (ex: progresso[1] = 3 estrelas)
-  const progresso = {};
-  progressoSnapshot.forEach(doc => {
-    const data = doc.data();
-    // --- CORRIGIDO: Typo 'estrelasObtidase' para 'estrelasObtidas' ---
-    progresso[data.nivelId] = data.estrelasObtidas;
-  });
-
-  // 3. Pega os dados estáticos dos níveis (do seu niveis.js)
+  // 4. Garante que niveis.js foi carregado
   if (typeof NIVEIS_DATA === 'undefined') {
-    containerNiveis.innerHTML = "Erro: niveis.js não foi carregado.";
+    containerMod1.innerHTML = "Erro: Dados dos níveis não encontrados.";
     return;
   }
   
-  // 4. Limpa o container e desenha os cards
-  containerNiveis.innerHTML = "";
+  // 5. ★ LÓGICA DE DESBLOQUEIO DE MÓDULO ★
+  // (Baseado na especificação: 70% das estrelas)
+  // Módulo 1 tem 15 estrelas (5 níveis * 3). 70% = 10.5. Arredondado = 11.
+  const mod2Desbloqueado = (estrelasModulo1 >= 11); 
   
-  // Filtra apenas os níveis do Módulo 1 (ex: 1 ao 5)
-  const niveisModulo1 = Object.values(NIVEIS_DATA); 
+  if (mod2Desbloqueado) {
+    moduloCondicionais.classList.remove('modulo-bloqueado');
+    moduloCondicionais.querySelector('h2').innerText = 'Módulo 2: Condicionais';
+  }
+
+  // 6. Renderiza os níveis, separando por módulo
+  containerMod1.innerHTML = "";
+  containerMod2.innerHTML = "";
   
-  niveisModulo1.forEach(nivel => {
-    const nivelId = nivel.numericId;
-    const estrelas = progresso[nivelId] || 0; // Pega estrelas salvas, ou 0
+  const niveis = Object.values(NIVEIS_DATA);
+  niveis.sort((a, b) => a.numericId - b.numericId);
+
+  niveis.forEach(nivel => {
+    const id = nivel.numericId;
+    const estrelas = progresso[id] || 0;
     
-    // Desenha o HTML do card para este nível
-    containerNiveis.innerHTML += `
-      <div class="nivel-card">
+    // Lógica de bloqueio de NÍVEL (igual à anterior)
+    let nivelBloqueado = false;
+    if (id > 1) { // Nível 1 está sempre desbloqueado
+      const estrelasAnterior = progresso[id - 1] || 0;
+      if (estrelasAnterior === 0) {
+        nivelBloqueado = true;
+      }
+    }
+    
+    // Lógica de bloqueio de MÓDULO
+    if (nivel.modulo === 2 && !mod2Desbloqueado) {
+      nivelBloqueado = true;
+    }
+
+    // Cria o HTML do card
+    const cardHTML = `
+      <div class="nivel-card ${nivelBloqueado ? 'bloqueado' : ''}">
         <h3>${nivel.id}</h3>
         <div class="estrelas-container">
-          <span class="${estrelas >= 1 ? 'cheia' : ''}">★</span>
-          <span class="${estrelas >= 2 ? 'cheia' : ''}">★</span>
-          <span class="${estrelas >= 3 ? 'cheia' : ''}">★</span>
+          ${nivelBloqueado ? '🔒' : gerarEstrelasHTML(estrelas)}
         </div>
-        <button onclick="jogarNivel(${nivelId})">JOGAR</button>
+        <button onclick="jogarNivel(${id})" ${nivelBloqueado ? 'disabled' : ''}>
+          ${nivelBloqueado ? 'BLOQUEADO' : 'JOGAR'}
+        </button>
       </div>
     `;
     
-    // TODO: Adicionar lógica para bloquear níveis futuros
+    // Adiciona o card ao container do módulo correto
+    if (nivel.modulo === 1) {
+      containerMod1.innerHTML += cardHTML;
+    } else if (nivel.modulo === 2) {
+      containerMod2.innerHTML += cardHTML;
+    }
   });
 }
 
+// (As funções auxiliares permanecem as mesmas)
+function gerarEstrelasHTML(numEstrelas) {
+  let html = '';
+  for (let i = 0; i < 3; i++) {
+    html += `<span class="${i < numEstrelas ? 'cheia' : ''}">★</span>`;
+  }
+  return html;
+}
+
 function jogarNivel(nivelId) {
-  // Redireciona para a página do jogo, passando o nível na URL
+  // O 'disabled' no HTML já trata o bloqueio
   window.location.href = `fase.html?nivel=${nivelId}`;
 }

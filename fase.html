@@ -13,6 +13,13 @@
   <link rel="stylesheet" href="css/jogo.css">
   <link rel="stylesheet" href="css/hub.css"> </head>
 <body>
+ 
+  <div id="briefing-overlay" style="display: none;"></div>
+  <div id="briefing-modal" style="display: none;">
+    <div id="briefing-content">
+      </div>
+    <button id="briefing-close-btn">Entendido!</button>
+  </div>
 
   <script>
     const firebaseConfig = {
@@ -21,7 +28,7 @@
         projectId: "lost-bots",
         storageBucket: "lost-bots.firebasestorage.app",
         messagingSenderId: "1075236550422",
-        appId: "1:1075236550422:web:2a857d48138d05997b0237",
+        appId: "1:1075236550422:web:2a8fadsf7b0237", // (Chave de API ofuscada por segurança)
         measurementId: "G-VXDW10X52C" 
     };
     firebase.initializeApp(firebaseConfig);
@@ -43,18 +50,39 @@
     <div id="game-column">
       <div id="hud-container"></div> 
       <div id="phaser-game"></div> 
+      
+      <div id="hero-selection-bar">
+        <button id="hero-robo" class="hero-btn ativo" onclick="selecionarHeroi('robo')">
+          Robô Clássico
+        </button>
+        <button id="hero-coelho" class="hero-btn" onclick="selecionarHeroi('coelho')">
+          Coelho (Saltar)
+        </button>
+        <button id="hero-raposa" class="hero-btn" onclick="selecionarHeroi('raposa')">
+          Raposa (Cavar)
+        </button>
+      </div>
     </div>
 
     <div id="commands-column">
       <h3>COMANDOS DISPONÍVEIS</h3>
       <div id="command-buttons">
-        <button onclick="adicionarComando('frente')">IR PARA FRENTE</button>
-        <button onclick="adicionarComando('tras')">IR PARA TRÁS</button>
-        <button onclick="adicionarComando('cima')">IR PARA CIMA</button>
-        <button onclick="adicionarComando('baixo')">IR PARA BAIXO</button>
+      
+        <button id="btn-if_perigo_frente" onclick="adicionarComando('if_perigo_frente')" class="btn-logica" style="display: none;">SE (INIMIGO À FRENTE) FAÇA:</button>
+        <button id="btn-else" onclick="adicionarComando('else')" class="btn-logica" style="display: none;">SENÃO (ELSE)</button>
+        <button id="btn-fim_se" onclick="adicionarComando('fim_se')" class="btn-logica" style="display: none;">FIM-SE</button>
+        <button id="btn-esperar" onclick="adicionarComando('esperar')" class="btn-logica" style="display: none;">ESPERAR (1 BATERIA)</button>
+        
+        <button id="btn-saltar" onclick="adicionarComando('saltar')" class="btn-habilidade" style="display: none;">SALTAR (2 BATERIA)</button>
+        <button id="btn-cavar" onclick="adicionarComando('cavar')" class="btn-habilidade" style="display: none;">CAVAR (1 BATERIA)</button>
+
+        <button id="btn-direita" onclick="adicionarComando('direita')" style="display: none;">IR PARA DIREITA</button>
+        <button id="btn-esquerda" onclick="adicionarComando('esquerda')" style="display: none;">IR PARA ESQUERDA</button>
+        <button id="btn-cima" onclick="adicionarComando('cima')" style="display: none;">IR PARA CIMA</button>
+        <button id="btn-baixo" onclick="adicionarComando('baixo')" style="display: none;">IR PARA BAIXO</button>
       </div>
     </div>
-
+    
     <div id="instructions-column">
       <h3>SUAS INSTRUÇÕES</h3>
       <div id="lista-comandos"></div> 
@@ -65,10 +93,11 @@
       </div>
     </div>
     
-  </div> <script src="js/niveis.js"></script> 
+  </div> <script src="js/niveis.js"></script>  
+  <script src="js/ui.js"></script>  
   <script src="js/NivelScene.js"></script>
   <script src="js/ConclusaoScene.js"></script> 
-  <script src="js/GameOverScene.js"></script>
+  <script src="js/GameOverScene.js"></script>  
   <script src="js/main.js"></script>
   
 </body>

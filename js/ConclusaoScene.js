@@ -39,14 +39,32 @@ class ConclusaoScene extends Phaser.Scene {
     this.salvarProgresso();
     // --- FIM ---
 
-    // Lógica para desenhar as estrelas
+    // --- Lógica para desenhar as estrelas (★ CORREÇÃO 2.0) ---
     const starY = 220;
-    for (let i = 0; i < 3; i++) {
-      this.add.sprite(220 + i * 80, starY, 'star').setScale(0.1).setTint(0x444444);
-    }
+    const starCenterX = MAP_SIZE / 2; // O centro da tela (240px)
+    
+    // ★ 1. AUMENTA O ESPAÇAMENTO
+    const starSpacing = 80; // Era 70
+    
+    // ★ 2. DEFINE UMA ESCALA MENOR
+    const starScale = 0.08; // Era 0.1
+    
+    const starPositionsX = [
+      starCenterX - starSpacing, // Estrela da Esquerda (ex: 240 - 80 = 160)
+      starCenterX,               // Estrela do Meio   (ex: 240)
+      starCenterX + starSpacing  // Estrela da Direita (ex: 240 + 80 = 320)
+    ];
+
+    // 1. Desenha as 3 estrelas de fundo (cinzas) com a nova escala
+    starPositionsX.forEach(posX => {
+      this.add.sprite(posX, starY, 'star').setScale(starScale).setTint(0x444444);
+    });
+    
+    // 2. Desenha as estrelas conquistadas (amarelas) por cima
     for (let i = 0; i < this.estrelas; i++) {
-      this.add.sprite(220 + i * 80, starY, 'star').setScale(0.1);
+      this.add.sprite(starPositionsX[i], starY, 'star').setScale(starScale);
     }
+    // --- Fim da Correção ---
 
     // Textos de XP
     let bonusXp = (this.estrelas > 1) ? (this.estrelas - 1) * 50 : 0;

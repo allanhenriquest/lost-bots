@@ -1,202 +1,333 @@
- /* ... (CSS 'body', 'h3', 'button', etc. sem alterações) ... */
+/* ==================================
+   CSS/JOGO.CSS
+   Estilos para fase.html (O Jogo)
+   ================================== */
 
-    /* --- CABEÇALHO --- */
-    /* EM css/jogo.css */
+/* --- 1. Global / Body --- */
+body {
+  margin: 0;
+  background: #1e1e1e;
+  color: white;
+  font-family: sans-serif;
+}
 
-/* Modifique ou adicione esta regra */
-    header {
-    display: flex;
-    justify-content: space-between; /* Isso alinha os 3 itens */
-    align-items: center;
-    padding: 10px 20px;
-    background: #2a2a2a; /* Fundo do painel */
-    border-bottom: 2px solid #008c9e;
-    }
+h3 {
+  margin-top: 0;
+  border-bottom: 2px solid #00bcd4;
+  padding-bottom: 5px;
+}
 
-    /* 2. NOVO: Estilos para o HUD (Vidas e Bateria) */
-    #game-status {
-      display: flex;
-      align-items: center;
-      gap: 30px; /* Espaço entre Vidas e Bateria */
-    }
-    #status-vidas, #status-bateria {
-      display: flex;
-      gap: 6px; /* Espaço entre os ícones */
-      align-items: center;
-    }
-    #game-status img {
-      height: 28px;
-    }
-  
-  
-    body {
-      margin: 0;
-      background: #1e1e1e;
-      color: white;
-      font-family: sans-serif;
-    }
-
-    /* --- CABEÇALHO --- */
-    header {
-      padding: 10px 20px;
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #00bcd4; /* Ciano do protótipo */
-    }
-
-    /* --- LAYOUT PRINCIPAL (3 COLUNAS) --- */
-    #game-layout {
-      display: flex;
-      flex-wrap: wrap; /* Permite quebrar em telas menores */
-      justify-content: center;
-      padding: 20px;
-      gap: 20px;
-    }
-
-    /* --- COLUNA DA ESQUERDA (JOGO) --- */
-    #game-column {
-      flex: 2; /* Ocupa mais espaço */
-      min-width: 480px; /* Garante espaço para o canvas */
-    }
-
-    /* Placeholder onde o Phaser vai injetar o canvas */
-    #phaser-game {
-      width: 480px;
-      height: 480px;
-      margin-bottom: 10px;
-    }
-
-    #phaser-game canvas {
-      border-radius: 8px; /* Borda no canvas */
-    }
-
-    /* --- COLUNA DO MEIO (COMANDOS) --- */
-    #commands-column {
-      flex: 1;
-      min-width: 250px;
-      background: #2a2a2a;
-      border-radius: 8px;
-      padding: 15px;
-    }
-
-    /* --- COLUNA DA DIREITA (INSTRUÇÕES) --- */
-    #instructions-column {
-      flex: 1;
-      min-width: 250px;
-      background: #2a2a2a;
-      border-radius: 8px;
-      padding: 15px;
-    }
-
-    h3 {
-      margin-top: 0;
-      border-bottom: 2px solid #00bcd4;
-      padding-bottom: 5px;
-    }
-
-    /* --- PAINEL DE INSTRUÇÕES (LISTA) --- */
-    #lista-comandos {
-      min-height: 200px;
-      background: #1a1a1a;
-      border: 1px solid #444;
-      border-radius: 4px;
-      padding: 10px;
-      margin-bottom: 15px;
-      overflow-y: auto;
-    }
-
-    #lista-comandos p {
-      margin: 2px 0;
-      padding: 5px;
-      background: #333;
-      border-radius: 3px;
-    }
-
-    /* --- BOTÕES --- */
-    button {
-      display: block; /* Um botão por linha */
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 16px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      background: #008c9e;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      text-align: left;
-    }
-
-    button:hover {
-      background: #00bcd4;
-    }
-
-    #execution-buttons button {
-      background: #4CAF50; /* Verde para Executar */
-      text-align: center;
-      font-weight: bold;
-    }
-    
-    #execution-buttons button[onclick*="resetar"] {
-      background: #f44336; /* Vermelho para Resetar */
-    }
-/* EM css/jogo.css */
-
-/* 4. Estilos para o novo HUD do Jogo */
-#hud-container {
+/* --- 2. Header (Cabeçalho) --- */
+header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 30px; /* Espaço entre Vidas e Bateria */
-  
-  /* Usa as cores do painel para integrar */
-  background: #2a2a2a; 
-  padding: 10px 15px;
-  
-  /* Alinha com o canvas do jogo */
-  width: 480px; /* Largura exata do canvas */
-  box-sizing: border-box; /* Garante que o padding não aumente a largura */
-  
-  /* Cantos arredondados apenas no topo */
-  border-radius: 8px 8px 0 0;
-  
-  /* Remove qualquer margem estranha entre o HUD e o canvas */
-  margin-bottom: -1px; /* Ajuste fino */
-  position: relative; /* Garante que fique "em cima" */
-  z-index: 10;
-}
-
-/* 5. Estilos para os ícones (o mesmo que antes) */
-#status-vidas, #status-bateria {
-  display: flex;
-  gap: 6px; 
-  align-items: center;
-}
-
-#hud-container img {
-  height: 28px;
-}
-
-
-/* Estilo para o logo (texto estático) */
-.logo-text {
+  padding: 10px 20px;
+  background: #2a2a2a;
+  border-bottom: 2px solid #008c9e;
   font-size: 1.5em;
   font-weight: bold;
-  color: #00bcd4; /* Ciano do protótipo */
 }
 
-/* Estilo para o novo link "Mapa de Níveis" */
+/* Container para o email e botão 'Sair' */
+#game-status {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 0.8em;
+  color: #eee;
+}
+
+/* Logo "LOST BOTS" no header */
+.logo-text {
+  font-size: 1.0em; 
+  font-weight: bold;
+  color: #00bcd4;
+}
+
+/* Link "Mapa de Níveis" */
 .mapa-link {
-  font-size: 1.0em;
+  font-size: 0.8em; 
   font-weight: bold;
   color: #fff;
   text-decoration: none;
   padding: 8px 12px;
   border-radius: 4px;
-  background: #008c9e; /* Ciano escuro */
+  background: #008c9e;
   transition: background-color 0.2s ease;
 }
-
 .mapa-link:hover {
-  background: #00bcd4; /* Ciano claro */
-  color: #fff;
+  background: #00bcd4;
+}
+
+/* Botão 'Sair' (logout) */
+.logout-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.logout-btn:hover { 
+  background: #d32f2f; 
+}
+
+
+/* --- 3. Layout Principal (3 Colunas) --- */
+#game-layout {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: center;
+  padding: 20px;
+  gap: 20px;
+  
+  /* ★ A CORREÇÃO QUE FALTAVA (corrige o bug de scroll) ★ */
+  align-items: flex-start; 
+}
+
+/* --- 4. Coluna da Esquerda (Jogo) --- */
+#game-column {
+  flex: 2; 
+  min-width: 480px; 
+}
+
+/* (HUD de Vidas/Bateria) */
+#hud-container {
+  display: flex;
+  align-items: center;
+  gap: 30px; 
+  background: #2a2a2a; 
+  padding: 10px 15px;
+  width: 480px; 
+  box-sizing: border-box; 
+  border-radius: 8px 8px 0 0;
+  margin-bottom: -1px; 
+  position: relative; 
+  z-index: 10;
+}
+#status-vidas, #status-bateria {
+  display: flex;
+  gap: 6px; 
+  align-items: center;
+}
+#hud-container img {
+  height: 28px;
+}
+
+/* (Canvas do Jogo) */
+#phaser-game {
+  width: 480px;
+  height: 480px;
+  margin-bottom: 10px;
+}
+#phaser-game canvas {
+  border-radius: 0 0 8px 8px; /* Ajustado para alinhar com o HUD */
+}
+
+/* (Barra de Seleção de Herói) */
+#hero-selection-bar {
+  display: flex;
+  justify-content: space-around;
+  background: #2a2a2a;
+  padding: 10px;
+  border-radius: 8px; 
+  width: 480px;
+  box-sizing: border-box;
+}
+.hero-btn {
+  flex-grow: 1;
+  text-align: center;
+  padding: 10px 5px;
+  font-size: 14px;
+  font-weight: bold;
+  background: #555; 
+  color: #aaa;
+  border: 2px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px; 
+}
+.hero-btn.ativo {
+  background: #008c9e; 
+  color: white;
+  border-color: #00bcd4;
+}
+.hero-btn:hover:not(.ativo) {
+  background: #777;
+}
+
+
+/* --- 5. Colunas da Direita (UI de Comandos) --- */
+#commands-column,
+#instructions-column {
+  flex: 1;
+  min-width: 250px;
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+/* (Lista de "Suas Instruções") */
+#lista-comandos {
+  min-height: 200px;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 15px;
+  overflow-y: auto;
+}
+#lista-comandos p {
+  margin: 2px 0;
+  padding: 5px;
+  background: #333;
+  border-radius: 3px;
+}
+
+/* (Estilos de Indentação - Corrigidos) */
+#lista-comandos p.bloco {
+  font-weight: bold;
+  color: #a5d6a7; 
+}
+#lista-comandos p.aninhado-1 {
+  margin-left: 20px;
+  width: calc(100% - 30px);
+  background: #444; 
+}
+#lista-comandos p.aninhado-2 {
+  margin-left: 40px;
+  width: calc(100% - 50px);
+  background: #555;
+}
+
+
+/* --- 6. Botões (Geral e Específicos) --- */
+
+/* (Botão Genérico - padrão para comandos de movimento) */
+button {
+  display: block; 
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: #008c9e;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-align: left;
+}
+button:hover {
+  background: #00bcd4;
+}
+
+/* (Botões de Lógica: IF, ELSE, FIM-SE) */
+.btn-logica {
+  background-color: #6a1b9a; 
+  border-bottom: 2px solid #4a148c;
+}
+.btn-logica:hover {
+  background-color: #8e24aa;
+}
+
+/* (Botões de Habilidade: SALTAR, CAVAR) */
+.btn-habilidade {
+  background-color: #FF8F00; 
+  border-bottom: 2px solid #E65100;
+}
+.btn-habilidade:hover {
+  background-color: #FFA000;
+}
+
+/* (Botões de Execução: EXECUTAR, RESETAR) */
+#execution-buttons button {
+  background: #4CAF50; 
+  text-align: center;
+  font-weight: bold;
+}
+#execution-buttons button[onclick*="resetar"] {
+  background: #f44336; 
+}
+
+/* --- 7. Modal de Briefing (Tutorial) --- */
+#briefing-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99;
+}
+#briefing-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background: #2a2a2a; 
+  color: white;
+  border-radius: 8px;
+  border: 2px solid #00bcd4; 
+  z-index: 100;
+  padding: 20px 30px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+}
+#briefing-content h2 {
+  color: #00bcd4;
+  margin-top: 0;
+  border-bottom: 1px solid #008c9e;
+  padding-bottom: 10px;
+}
+#briefing-content p {
+  line-height: 1.6;
+}
+#briefing-content ul {
+  padding-left: 20px;
+}
+#briefing-content li {
+  margin-bottom: 10px;
+}
+#briefing-close-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+#briefing-close-btn:hover {
+  background: #5cb860;
+}
+
+/* Remove o estilo antigo, se houver */
+#status-bateria {
+  display: none;
+}
+
+/* Estilo para o novo contador numérico */
+#status-bateria-numerico {
+  display: flex;
+  align-items: center; /* Alinha o ícone e o texto */
+  gap: 10px; /* Espaço entre o ícone e o texto */
+}
+
+#status-bateria-numerico img {
+  height: 28px; /* Mesmo tamanho dos corações */
+  opacity: 1;
+}
+
+#status-bateria-numerico span {
+  font-size: 24px; /* Tamanho do número */
+  font-weight: bold;
+  color: #00bcd4; /* Cor ciano para destaque */
 }
