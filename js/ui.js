@@ -9,9 +9,9 @@ const gameManager = {
   cenaAtiva: null,
   vidas: 4,
   bateria: 5,
-  buildState: 'root',
-  currentIfBlock: null,
-  heroiAtivo: 'robo' 
+  // ★ MODIFICADO: Removemos buildState e currentIfBlock
+  // Esta pilha (stack) guardará o [bloco, estado] de cada IF aninhado
+  contextStack: [], 
 };
 
 // --- FUNÇÃO DE ATUALIZAR HUD ---
@@ -55,73 +55,128 @@ function selecionarHeroi(nomeHeroi) {
 
 // --- FUNÇÕES DE CONTROLO DE COMANDOS ---
 function adicionarComando(cmd) {
-  if (!gameManager.cenaAtiva || gameManager.cenaAtiva.scene.key !== 'NivelScene') {
-    return;
+  if (!gameManager.cenaAtiva || gameManager.cenaAtiva.scene.key !== 'NivelScene') {
+    return;
+  }
+  
+  // Helper: Pega o contexto atual [bloco, estado] ou null
+  function getCurrentContext() {
+    if (gameManager.contextStack.length === 0) return null;
+    return gameManager.contextStack[gameManager.contextStack.length - 1];
+  }
+
+  // Helper: Pega o ARRAY (comandos, then, ou else) onde o próximo comando deve ser adicionado
+  function getTargetArray() {
+    const context = getCurrentContext();
+    if (!context) {
+      return gameManager.comandos; // Estamos no Root
+    }
+    
+    const [block, state] = context;
+    if (state === 'building_if') {
+      return block.then;
+    } else if (state === 'building_else') {
+      return block.else;
+    }
+    return gameManager.comandos; // Fallback
+  }
+
+  // --- Lógica de Adição ---
+
+  // 1. É um comando IF?
+  if (cmd.startsWith('if_')) {
+    const newIfBlock = { type: 'if', condition: cmd, then: [], else: [] }; 
+    
+    const targetArray = getTargetArray();
+    targetArray.push(newIfBlock); // Adiciona o IF ao array 'then' do pai (ou ao root)
+
+    // ★ PUSH: Adiciona o novo bloco e seu estado ('building_if') à pilha
+    gameManager.contextStack.push([newIfBlock, 'building_if']);
+
+  // 2. É um ELSE?
+  } else if (cmd === 'else') {
+    const context = getCurrentContext();
+    if (context && context[1] === 'building_if') {
+      // Muda o estado do contexto ATUAL de 'if' para 'else'
+      context[1] = 'building_else';
+    }
+
+  // 3. É um FIM-SE?
+  } else if (cmd === 'fim_se') {
+    const context = getCurrentContext();
+    if (context) {
+      // ★ POP: Remove o contexto atual (o bloco que acabamos de fechar)
+      gameManager.contextStack.pop();
+    }
+
+  // 4. É um comando normal (direita, cavar, etc.)
+  } else {
+    const targetArray = getTargetArray();
+    targetArray.push(cmd);
   }
   
-  if (cmd === 'if_perigo_frente') {
-    if (gameManager.buildState !== 'root') return; 
-    const newIfBlock = { type: 'if', condition: 'perigo_frente', then: [], else: [] };
-    gameManager.comandos.push(newIfBlock);
-    gameManager.currentIfBlock = newIfBlock;
-    gameManager.buildState = 'building_if';
-  } else if (cmd === 'else') {
-    if (gameManager.buildState === 'building_if') {
-      gameManager.buildState = 'building_else';
-    }
-  } else if (cmd === 'fim_se') {
-    if (gameManager.buildState === 'building_if' || gameManager.buildState === 'building_else') {
-      gameManager.buildState = 'root';
-      gameManager.currentIfBlock = null;
-    }
-  } else {
-    if (gameManager.buildState === 'root') {
-      gameManager.comandos.push(cmd);
-    } else if (gameManager.buildState === 'building_if') {
-      gameManager.currentIfBlock.then.push(cmd);
-    } else if (gameManager.buildState === 'building_else') {
-      gameManager.currentIfBlock.else.push(cmd);
-    }
-  }
-  atualizarTexto();
+  atualizarTexto(); // Sempre atualiza a UI
 }
 
+
 function atualizarTexto() {
-  const listaDiv = document.getElementById('lista-comandos');
-  listaDiv.innerHTML = '';
-  
-  function renderizarLista(lista, nivelIndentacao) {
-    lista.forEach((cmd, i) => {
-      let numLinha = (nivelIndentacao === 0) ? `${i + 1}. ` : '&nbsp;&nbsp;&nbsp;&nbsp;L ';
-      let classeCss = (nivelIndentacao > 0) ? `aninhado-${nivelIndentacao}` : '';
-      
-      if (typeof cmd === 'string') {
-        listaDiv.innerHTML += `<p class="${classeCss}">${numLinha}${cmd.toUpperCase()}</p>`;
-      } else if (typeof cmd === 'object' && cmd.type === 'if') {
-        listaDiv.innerHTML += `<p class="bloco ${classeCss}">${numLinha}SE (INIMIGO À FRENTE) FAÇA:</p>`;
-        renderizarLista(cmd.then, nivelIndentacao + 1);
-        if (cmd.else.length > 0) {
-          listaDiv.innerHTML += `<p class="bloco ${classeCss}">${numLinha}SENÃO (ELSE):</p>`;
-          renderizarLista(cmd.else, nivelIndentacao + 1);
-        }
-        listaDiv.innerHTML += `<p class="bloco ${classeCss}">${numLinha}FIM-SE</p>`;
-      }
-    });
-  }
-  
-  renderizarLista(gameManager.comandos, 0);
-  
-  if (gameManager.buildState === 'building_if') {
-    listaDiv.innerHTML += `<p class="bloco">(Construindo bloco SE...)</p>`;
-  } else if (gameManager.buildState === 'building_else') {
-    listaDiv.innerHTML += `<p class="bloco">(Construindo bloco SENÃO...)</p>`;
-  }
-  
-  listaDiv.scrollTop = listaDiv.scrollHeight;
+  const listaDiv = document.getElementById('lista-comandos');
+  listaDiv.innerHTML = '';
+  
+  function renderizarLista(lista, nivelIndentacao) {
+    lista.forEach((cmd, i) => {
+      let numLinha = (nivelIndentacao === 0) ? `${i + 1}. ` : '&nbsp;&nbsp;&nbsp;&nbsp;L ';
+      let classeCss = (nivelIndentacao > 0) ? `aninhado-${nivelIndentacao}` : '';
+      
+      if (typeof cmd === 'string') {
+        listaDiv.innerHTML += `<p class="${classeCss}">${numLinha}${cmd.toUpperCase()}</p>`;
+      } else if (typeof cmd === 'object' && cmd.type === 'if') {
+        
+        // --- INÍCIO DA CORREÇÃO ---
+        let textoCondicao = 'SE (CONDIÇÃO DESCONHECIDA) FAÇA:'; // Padrão
+        
+        // Lê a condição que foi salva
+        if (cmd.condition === 'if_inimigo_frente') {
+          textoCondicao = 'SE (INIMIGO À FRENTE) FAÇA:';
+        } else if (cmd.condition === 'if_risco_frente') {
+          textoCondicao = 'SE (RISCO À FRENTE) FAÇA:';
+        }
+        // ★ NOVO ★
+        else if (cmd.condition === 'if_fogo_frente') {
+          textoCondicao = 'SE (FOGO À FRENTE) FAÇA:';
+        }        
+       else if (cmd.condition === 'if_elefante_cheio') { 
+          textoCondicao = 'SE (ELEFANTE CHEIO) FAÇA:';
+        }
+        
+        // Usa a variável em vez de texto hard-coded
+        listaDiv.innerHTML += `<p class="bloco ${classeCss}">${numLinha}${textoCondicao}</p>`;
+        // --- FIM DA CORREÇÃO ---
+        
+        renderizarLista(cmd.then, nivelIndentacao + 1);
+        if (cmd.else.length > 0) {
+          listaDiv.innerHTML += `<p class="bloco ${classeCss}">${numLinha}SENÃO (ELSE):</p>`;
+          renderizarLista(cmd.else, nivelIndentacao + 1);
+        }
+        listaDiv.innerHTML += `<p class="bloco ${classeCss}">${numLinha}FIM-SE</p>`;
+      }
+    });
+  }
+  
+  renderizarLista(gameManager.comandos, 0);
+  
+  if (gameManager.buildState === 'building_if') {
+    listaDiv.innerHTML += `<p class="bloco">(Construindo bloco SE...)</p>`;
+  } else if (gameManager.buildState === 'building_else') {
+    listaDiv.innerHTML += `<p class="bloco">(Construindo bloco SENÃO...)</p>`;
+  }
+  
+  listaDiv.scrollTop = listaDiv.scrollHeight;
 }
 
 function executar() {
-  if (gameManager.buildState !== 'root') {
+  // ★ MODIFICADO: Verifica a nova pilha ★
+  if (gameManager.contextStack.length > 0) {
     console.warn("Complete o bloco SE/SENÃO/FIM-SE antes de executar.");
     return;
   }
@@ -139,8 +194,9 @@ function resetar() {
   gameManager.comandos = [];
   gameManager.index = 0;
   gameManager.executando = false;
-  gameManager.buildState = 'root';
-  gameManager.currentIfBlock = null; 
+  
+  // ★ MODIFICADO: Limpa a pilha ★
+  gameManager.contextStack = [];
   
   atualizarTexto(); 
   

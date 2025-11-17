@@ -17,7 +17,12 @@ const game = new Phaser.Game(config);
 // --- LÓGICA DE BOTÕES DINÂMICOS ---
 // (Mapeia o nome do comando ao ID do botão no HTML)
 const mapaBotoes = {
-  'if_perigo_frente': 'btn-if_perigo_frente',
+  'if_inimigo_frente': 'btn-if_inimigo_frente', // MODIFICADO
+  'if_risco_frente': 'btn-if_risco_frente',     // MODIFICADO
+  'if_fogo_frente': 'btn-if_fogo_frente',
+  'if_elefante_cheio': 'btn-if_elefante_cheio',
+  'absorver_agua': 'btn-absorver_agua',
+  'apagar_fogo': 'btn-apagar_fogo',
   'else': 'btn-else',
   'fim_se': 'btn-fim_se',
   'esperar': 'btn-esperar',
@@ -42,9 +47,12 @@ game.events.on('scene-ready', (cena) => {
     if (btn) btn.style.display = 'none';
   });
 
-  // 2. Mostra os botões permitidos (COM LÓGICA DE HERÓI)
+  /// 2. Mostra os botões permitidos (COM LÓGICA DE HERÓI)
   if (cena.scene.key === 'NivelScene' && cena.dadosNivel) {
     const comandosPermitidos = cena.dadosNivel.comandosDisponiveis || [];
+    
+    // ★ NOVO: Pega o herói direto da CENA (NivelScene) ★
+    const heroiDoNivel = cena.heroiAtivo || 'robo';
     
     // ★ INÍCIO DA LÓGICA DE FILTRO ★
     comandosPermitidos.forEach(nomeComando => {
@@ -58,14 +66,37 @@ game.events.on('scene-ready', (cena) => {
 
       // --- Verifica Habilidades Específicas ---
       if (nomeComando === 'cavar') {
-        if (gameManager.heroiAtivo === 'raposa') {
+        // ★ CORREÇÃO: Use 'heroiDoNivel' aqui ★
+        if (heroiDoNivel === 'raposa') {
           mostrarBotao = true;
         }
       } else if (nomeComando === 'saltar') {
-        if (gameManager.heroiAtivo === 'coelho') {
+        // ★ CORREÇÃO: Use 'heroiDoNivel' aqui ★
+        if (heroiDoNivel === 'coelho') {
           mostrarBotao = true;
         }
-      } else {
+      }else if (nomeComando === 'apagar_fogo') {
+        if (heroiDoNivel === 'elefante') {
+          mostrarBotao = true;
+        }
+      
+      } else if (nomeComando === 'absorver_agua') {
+        if (heroiDoNivel === 'elefante') {
+          mostrarBotao = true;
+        }
+      
+      } 
+      // ★ NOVO: Lógica do 'IF' do Elefante ★
+       else if (nomeComando === 'if_elefante_cheio') {
+        if (heroiDoNivel === 'elefante') {
+          mostrarBotao = true;
+        }
+      } else if (nomeComando === 'if_fogo_frente') {
+        if (heroiDoNivel === 'elefante') {
+          mostrarBotao = true;
+        }
+      }
+      else {
         // --- É um comando normal (direita, if, else, etc.) ---
         // Todos os heróis podem usar comandos normais.
         mostrarBotao = true;

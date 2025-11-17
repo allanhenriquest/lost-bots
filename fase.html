@@ -50,26 +50,19 @@
     <div id="game-column">
       <div id="hud-container"></div> 
       <div id="phaser-game"></div> 
-      
-      <div id="hero-selection-bar">
-        <button id="hero-robo" class="hero-btn ativo" onclick="selecionarHeroi('robo')">
-          Robô Clássico
-        </button>
-        <button id="hero-coelho" class="hero-btn" onclick="selecionarHeroi('coelho')">
-          Coelho (Saltar)
-        </button>
-        <button id="hero-raposa" class="hero-btn" onclick="selecionarHeroi('raposa')">
-          Raposa (Cavar)
-        </button>
-      </div>
     </div>
 
     <div id="commands-column">
       <h3>COMANDOS DISPONÍVEIS</h3>
-      <div id="command-buttons">
-      
-        <button id="btn-if_perigo_frente" onclick="adicionarComando('if_perigo_frente')" class="btn-logica" style="display: none;">SE (INIMIGO À FRENTE) FAÇA:</button>
-        <button id="btn-else" onclick="adicionarComando('else')" class="btn-logica" style="display: none;">SENÃO (ELSE)</button>
+      <div id="command-buttons">  
+        <button id="btn-if_inimigo_frente" onclick="adicionarComando('if_inimigo_frente')" class="btn-logica" style="display: none;">SE (INIMIGO À FRENTE) FAÇA:</button>  
+        <button id="btn-if_risco_frente" onclick="adicionarComando('if_risco_frente')" class="btn-logica" style="display: none;">SE (RISCO À FRENTE) FAÇA:</button> 
+        <button id="btn-if_fogo_frente" onclick="adicionarComando('if_fogo_frente')" class="btn-logica" style="display: none;">SE (FOGO À FRENTE) FAÇA:</button>
+        <button id="btn-if_elefante_cheio" onclick="adicionarComando('if_elefante_cheio')" class="btn-logica" style="display: none;">SE (ELEFANTE CHEIO) FAÇA:</button>
+        <button id="btn-absorver_agua" onclick="adicionarComando('absorver_agua')" class="btn-habilidade" style="display: none;">ABSORVER ÁGUA</button>  
+        <button id="btn-apagar_fogo" onclick="adicionarComando('apagar_fogo')" class="btn-habilidade" style="display: none;">APAGAR FOGO</button> 
+        <button id="btn-else" onclick="adicionarComando('else')" class="btn-logica" style="display: none;">SENÃO (ELSE)</button>
+  
         <button id="btn-fim_se" onclick="adicionarComando('fim_se')" class="btn-logica" style="display: none;">FIM-SE</button>
         <button id="btn-esperar" onclick="adicionarComando('esperar')" class="btn-logica" style="display: none;">ESPERAR (1 BATERIA)</button>
         
