@@ -219,4 +219,4 @@ function resetar() {
       game.scene.start('NivelScene', { nivelId: nivelParaResetar });
     }
   }
-}
+} // <--- APENAS UMA chave aqui. Apaga a chave extra se houver outra abaixo.

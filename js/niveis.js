@@ -272,6 +272,8 @@ const NIVEIS_DATA = {
       <h2>MÓDULO 2: Habilidade Condicional</h2>
       <p>Use SE (RISCO À FRENTE) para detectar o território do Tigre.</p>
       <p>Quando houver risco, use CAVAR para passar com segurança.</p>
+      <p>Ao cavar, o personagem pode ocupar o mesmo quadrado do Tigre.</p>
+      <p>Não é necessário voltar a superfície para vencer o nível.</p>
     `
   },
 
@@ -310,6 +312,7 @@ const NIVEIS_DATA = {
     briefing: `
       <h2>MÓDULO 2: Desafio de Lógica</h2>
       <p>Passe pelo Tigre usando SE + CAVAR, pegue a recarga, ative o botão e chegue à porta.</p>
+      <p>Existe uma recarga no nível e é protegida pelo Tigre.</p>
     `
   },
 
@@ -345,7 +348,7 @@ const NIVEIS_DATA = {
       {x: 0, y: 2}
     ],
 
-    comandosIdeal: 20,
+    comandosIdeal: 25,
     comandosMax2Estrelas: 25,
 
     comandosDisponiveis: [
@@ -393,7 +396,7 @@ const NIVEIS_DATA = {
     inimigos: [],
     caminhoInimigo: [],
 
-    comandosIdeal: 7,
+    comandosIdeal: 9,
     comandosMax2Estrelas: 9,
 
     comandosDisponiveis: [
@@ -410,8 +413,10 @@ const NIVEIS_DATA = {
 
     briefing: `
       <h2>MÓDULO 2: O Elefante</h2>
-      <p>Colete água das poças, encha o reservatório e apague o fogo.</p>
-    `
+      <p>Colete água das poças, encha o reservatório do elefante e apague o fogo.</p>
+      <p>Só é possível coletar água das poças estando no quadrado delas.</p>
+      <p>O Elefante só fica cheio para apagar as poças absorvendo duas poças.</p>
+  `
   }
 };
 

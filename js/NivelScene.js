@@ -540,8 +540,7 @@ class NivelScene extends Phaser.Scene {
     console.warn("Vida perdida:", motivo);
 
     gameManager.comandos = [];
-    gameManager.buildState = 'root';
-    gameManager.currentIfBlock = null;
+    // gameManager.buildState e currentIfBlock já não são usados, mas limpar não faz mal
     atualizarTexto();
 
     gameManager.vidas--;
@@ -557,12 +556,14 @@ class NivelScene extends Phaser.Scene {
 
     this.time.delayedCall(1500, () => {
       if (gameManager.vidas <= 0) {
-        this.scene.start('GameOverScene');
+        // ★ MODIFICAÇÃO AQUI: Passamos o ID do nível atual para o GameOverScene
+        this.scene.start('GameOverScene', { currentLevelId: this.dadosNivel.numericId });
       } else {
         this.scene.restart({ nivelId: this.dadosNivel.numericId });
       }
     });
   }
+
 
   moverInimigos() {
     const getPos = (cell) => cell * GRID_SIZE + GRID_SIZE / 2;
