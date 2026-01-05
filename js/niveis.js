@@ -43,7 +43,17 @@ const NIVEIS_DATA = {
     comandosIdeal: 4,
     comandosMax2Estrelas: 5,
     comandosDisponiveis: ['direita', 'esquerda', 'cima', 'baixo'],
-    briefing: null
+    briefing: `
+      
+      <p>O seu robô está perdido. O seu objetivo é guiá-lo até a <strong>Porta (Saída)</strong>.</p>
+      <p><strong>REGRAS:</strong></p>
+      <ul>
+        <li>Use os botões em "Comandos Disponíveis" para criar uma sequência.</li>
+        <li>Cada movimento gasta 1 ponto de <strong>Bateria</strong> (barra azul).</li>
+        <li>Se colidir com paredes ou ficar sem bateria, você perde 1 <strong>Vida</strong> (corações).</li>
+      </ul>
+      <p>Boa sorte!</p>
+    `
   },
   3: {
     id: 'Fase 3',
@@ -59,7 +69,17 @@ const NIVEIS_DATA = {
     comandosIdeal: 5,
     comandosMax2Estrelas: 5,
     comandosDisponiveis: ['direita', 'esquerda', 'cima', 'baixo'],
-    briefing: null
+    briefing: `
+      
+      <p>O seu robô está perdido. O seu objetivo é guiá-lo até a <strong>Porta (Saída)</strong>.</p>
+      <p><strong>REGRAS:</strong></p>
+      <ul>
+        <li>Use os botões em "Comandos Disponíveis" para criar uma sequência.</li>
+        <li>Cada movimento gasta 1 ponto de <strong>Bateria</strong> (barra azul).</li>
+        <li>Se colidir com paredes ou ficar sem bateria, você perde 1 <strong>Vida</strong> (corações).</li>
+      </ul>
+      <p>Boa sorte!</p>
+    `
   },
   4: {
     id: 'Fase 4',
@@ -75,7 +95,17 @@ const NIVEIS_DATA = {
     comandosIdeal: 4,
     comandosMax2Estrelas: 5,
     comandosDisponiveis: ['direita', 'esquerda', 'cima', 'baixo'],
-    briefing: null
+    briefing: `
+      
+      <p>O seu robô está perdido. O seu objetivo é guiá-lo até a <strong>Porta (Saída)</strong>.</p>
+      <p><strong>REGRAS:</strong></p>
+      <ul>
+        <li>Use os botões em "Comandos Disponíveis" para criar uma sequência.</li>
+        <li>Cada movimento gasta 1 ponto de <strong>Bateria</strong> (barra azul).</li>
+        <li>Se colidir com paredes ou ficar sem bateria, você perde 1 <strong>Vida</strong> (corações).</li>
+      </ul>
+      <p>Boa sorte!</p>
+    `
   },
   5: {
     id: 'Fase 5',
@@ -91,7 +121,17 @@ const NIVEIS_DATA = {
     comandosIdeal: 4,
     comandosMax2Estrelas: 5,
     comandosDisponiveis: ['direita', 'esquerda', 'cima', 'baixo'],
-    briefing: null
+    briefing: `
+      
+      <p>O seu robô está perdido. O seu objetivo é guiá-lo até a <strong>Porta (Saída)</strong>.</p>
+      <p><strong>REGRAS:</strong></p>
+      <ul>
+        <li>Use os botões em "Comandos Disponíveis" para criar uma sequência.</li>
+        <li>Cada movimento gasta 1 ponto de <strong>Bateria</strong> (barra azul).</li>
+        <li>Se colidir com paredes ou ficar sem bateria, você perde 1 <strong>Vida</strong> (corações).</li>
+      </ul>
+      <p>Boa sorte!</p>
+    `
   },
 
   // === MÓDULO 1: PARTE 2 (Botões e Recarga) ===
@@ -157,7 +197,16 @@ const NIVEIS_DATA = {
     comandosIdeal: 8,
     comandosMax2Estrelas: 10,
     comandosDisponiveis: ['direita', 'esquerda', 'cima', 'baixo'],
-    briefing: `...`
+    briefing: `
+      
+      <p>A sua bateria inicial é de apenas <strong>5 unidades</strong>, mas a porta está a <strong>8 passos</strong> de distância.</p>
+      <p>Você não conseguirá chegar lá diretamente.</p>
+      <p><strong>OBJETIVO:</strong></p>
+      <ul>
+        <li>Planeje seu caminho para passar por cima do ícone de <strong>Recarga</strong> (Bateria).</li>
+        <li>Isso adicionará <strong> energia</strong> ao seu robô, permitindo completar a viagem.</li>
+      </ul>
+    `
   },
 
   // ★ NÍVEL 9 (CORRIGIDO SEM HACK) ★
@@ -203,6 +252,8 @@ const NIVEIS_DATA = {
     briefing: `
       <h2>Desafio Final do Módulo 1</h2>
       <p>Demonstre o seu domínio de sequenciamento e gestão de bateria.</p>
+      <p>A porta só liga se <strong>ambos</strong> os botões estiverem ativos.</p>
+      <p>Use a recarga com sabedoria.</p>
     `
   },
 

@@ -18,6 +18,7 @@ h3 {
 }
 
 /* --- 2. Header (Cabeçalho) --- */
+/* --- Atualização do Header para alinhar os grupos --- */
 header {
   display: flex;
   justify-content: space-between;
@@ -29,6 +30,33 @@ header {
   font-weight: bold;
 }
 
+/* Agrupadores para esquerda e direita */
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espaço entre os itens */
+}
+
+/* --- Estilo do Botão Dicas --- */
+.dica-btn {
+  background: #FFD700; /* Amarelo/Dourado para destaque */
+  color: #1e1e1e; /* Texto escuro para contraste */
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.6em; /* Um pouco menor que o título */
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease;
+  width: auto; /* Sobrescreve o width: 100% genérico de botões se houver */
+  margin-bottom: 0; /* Remove margem inferior padrão de botões */
+}
+
+.dica-btn:hover {
+  background: #ffea00; /* Amarelo mais claro ao passar o mouse */
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+}
 /* Container para o email e botão 'Sair' */
 #game-status {
   display: flex;
