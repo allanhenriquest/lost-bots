@@ -99,6 +99,7 @@ const firebaseConfig = {
 
 ### 📂 Estrutura do Projeto
 
+```text
 /
 ├── login.html        # Ecrã de login e registo (ponto de partida)
 ├── jogo.html         # Hub principal e seleção de níveis
@@ -117,6 +118,8 @@ const firebaseConfig = {
 │   ├── auth.js       # Login / registo
 │   ├── check-auth.js # Proteção de rotas
 │   └── ui.js         # Interface e botões
+
+```
 
 ---
 
