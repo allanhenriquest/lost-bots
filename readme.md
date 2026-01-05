@@ -41,7 +41,8 @@ Abra o terminal na pasta do projeto e execute:
 #### Python 3
 ```bash
 python -m http.server 8000
-
+```
+---
 
 ### 🟢 Opção 3: Node.js (`http-server`)
 
@@ -49,6 +50,8 @@ Se tem o **Node.js** instalado:
 
 ```bash
 npx http-server .
+```
+
 Depois, abra o endereço indicado no terminal
 (geralmente http://127.0.0.1:8080/login.html).
 
@@ -59,7 +62,8 @@ Este projeto utiliza o Firebase para:
 
 🗄️ Base de Dados (Firestore) para guardar progresso e estrelas
 
-⚠️ Nota Importante
+---
+### ⚠️ Nota Importante
 Os ficheiros atuais contêm uma configuração de Firebase hardcoded (apiKey, authDomain, etc.) nos seguintes ficheiros:
 
 login.html
@@ -70,7 +74,8 @@ fase.html
 
 Para garantir que o jogo funciona corretamente ou para usar a sua própria base de dados:
 
-🛠️ Passo a Passo
+---
+### 🛠️ Passo a Passo
 Crie um projeto no Firebase Console
 
 Ative Authentication (Email/Password)
@@ -81,8 +86,7 @@ Copie o objeto firebaseConfig do seu projeto
 
 Substitua o código existente nos 3 ficheiros HTML:
 
-javascript
-Copiar código
+```bash
 const firebaseConfig = {
     apiKey: "SUA_API_KEY",
     authDomain: "SEU_PROJETO.firebaseapp.com",
@@ -90,10 +94,11 @@ const firebaseConfig = {
     storageBucket: "SEU_PROJETO.firebasestorage.app",
     messagingSenderId: "SEU_ID",
     appId: "SEU_APP_ID"
-};
-📂 Estrutura do Projeto
-text
-Copiar código
+    };
+```
+
+### 📂 Estrutura do Projeto
+
 /
 ├── login.html        # Ecrã de login e registo (ponto de partida)
 ├── jogo.html         # Hub principal e seleção de níveis
@@ -112,18 +117,22 @@ Copiar código
 │   ├── auth.js       # Login / registo
 │   ├── check-auth.js # Proteção de rotas
 │   └── ui.js         # Interface e botões
-🎮 Como Jogar
-Crie uma conta ou faça login no ecrã inicial
+
+---
+
+### 🎮 Como Jogar
+
+
 
 Selecione um nível desbloqueado no Hub
 
 Use os botões de comando à direita para programar o robô
 
-Clique em EXECUTAR
+Clique em **EXECUTAR**
 
 Leve o robô até à Porta para vencer 🚪✨
 
-🧠 Tecnologias Utilizadas
+### 🧠 Tecnologias Utilizadas
 
 Phaser 3
 
